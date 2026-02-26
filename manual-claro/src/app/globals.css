@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+@theme {
+  --color-claro-red: #ef4444;
+  --color-claro-red-dark: #dc2626;
+}
