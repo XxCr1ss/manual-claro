@@ -77,18 +77,6 @@ const guides: GuideCard[] = [
         color: '#f59e0b',
     },
     {
-        id: 'wifi',
-        icon: Wifi,
-        title: 'Gestionar WiFi',
-        description: 'Administra tus servicios de internet, reinicia el modem y revisa el estado.',
-        steps: 7,
-        duration: '4 min',
-        href: '/gestionar-wifi',
-        difficulty: 'Medio',
-        available: false,
-        color: '#3b82f6',
-    },
-    {
         id: 'settings',
         icon: Settings,
         title: 'Configurar Cuenta',
@@ -122,7 +110,7 @@ const difficultyColor: Record<string, string> = {
 
 export default function GuidesSection() {
     return (
-        <section id="guias" className="relative py-28 px-4 overflow-hidden">
+        <section id="guias" className="relative py-[60px] px-4 overflow-hidden min-h-screen">
             {/* Subtle background gradient */}
             <div className="absolute inset-0 opacity-5"
                 style={{ background: 'radial-gradient(ellipse at 50% 0%, #e8002d, transparent 60%)' }} />

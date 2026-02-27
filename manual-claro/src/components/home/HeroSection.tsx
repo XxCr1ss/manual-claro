@@ -94,7 +94,7 @@ export default function HeroSection() {
                     className="flex items-center gap-8 mb-12 flex-wrap justify-center"
                 >
                     {[
-                        { icon: BookOpen, label: 'Guías', value: '4+' },
+                        { icon: BookOpen, label: 'Guías', value: '6' },
                         { icon: Zap, label: 'Pasos interactivos', value: '30+' },
                         { icon: Shield, label: 'Procesos cubiertos', value: '100%' },
                     ].map(({ icon: Icon, label, value }) => (
@@ -133,8 +133,9 @@ export default function HeroSection() {
             </div>
 
             {/* Scroll indicator */}
-            <motion.div
-                className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500"
+            <motion.a
+                href="#guias"
+                className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500 hover:text-white transition-colors duration-300 cursor-pointer"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2, duration: 0.6 }}
@@ -146,7 +147,7 @@ export default function HeroSection() {
                 >
                     <ChevronDown className="w-5 h-5" />
                 </motion.div>
-            </motion.div>
+            </motion.a>
         </section>
     );
 }
