@@ -183,7 +183,7 @@ export default function ScreenFlow({ flowData }: ScreenFlowProps) {
 
             <button
               onClick={() => setIsPanelOpen(true)}
-              className="px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300 glow-red-sm hover:glow-red"
+              className="px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300 glow-red-sm hover:glow-red cursor-pointer"
               style={{ background: 'linear-gradient(135deg, #e8002d, #b5001f)' }}
             >
               Ver Detalles

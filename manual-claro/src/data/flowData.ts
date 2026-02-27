@@ -10,9 +10,9 @@ export const paymentFlowData: FlowData = {
       hotspots: [
         {
           id: "inicio-pagar",
-          x: 35,
-          y: 85,
-          width: 30,
+          x: 5,
+          y: 31,
+          width: 20,
           height: 8,
           nextStep: 2,
           label: "Botón Pagar"

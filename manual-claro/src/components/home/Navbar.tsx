@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, BookOpen } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
     { href: '/#introduccion', label: 'Introducción' },
-    { href: '/#guias', label: 'Guías' },
     { href: '/pagar-factura', label: 'Pagar Factura' },
 ];
 
@@ -26,7 +26,10 @@ export default function Navbar() {
     return (
         <>
             <header
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'glass-dark shadow-2xl shadow-black/50 py-3' : 'py-5'
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 
+                    ${scrolled ? 
+                        'h-0 overflow-hidden' : 
+                        'py-5'
                     }`}
             >
                 <nav className="max-w-6xl mx-auto px-4 flex items-center justify-between">
@@ -34,9 +37,9 @@ export default function Navbar() {
                     <Link href="/" className="flex items-center gap-3 group" id="nav-logo">
                         <div
                             className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:glow-red-sm"
-                            style={{ background: 'linear-gradient(135deg, #e8002d, #b5001f)' }}
+                            style={{ background: 'linear-gradient(135deg, #c9c9c9, #c9c9c9)' }}
                         >
-                            <span className="text-white font-black text-lg">C</span>
+                            <Image src="/claro-logo.png" alt="Logo" width={32} height={32} />
                         </div>
                         <div>
                             <div className="text-white font-bold text-base leading-tight">Mi Claro</div>

@@ -3,10 +3,11 @@
 import { motion } from 'framer-motion';
 import { BookOpen, ChevronDown, Shield, Zap, Star } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function HeroSection() {
     return (
-        <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden animated-gradient mesh-gradient">
+        <section className="relative py-20 min-h-screen flex flex-col items-center justify-center overflow-hidden animated-gradient mesh-gradient">
             {/* Background grid */}
             <div
                 className="absolute inset-0 opacity-[0.03]"
@@ -54,8 +55,8 @@ export default function HeroSection() {
                     </div>
 
                     <div className="relative w-24 h-24 glow-red rounded-2xl flex items-center justify-center"
-                        style={{ background: 'linear-gradient(135deg, #e8002d 0%, #b5001f 100%)' }}>
-                        <span className="text-white font-black text-4xl tracking-tight">C</span>
+                        style={{ background: 'linear-gradient(135deg, #c9c9c9 0%, #c9c9c9 100%)' }}>
+                        <Image src="/claro-logo.png" alt="Logo" width={128} height={128} />
                     </div>
                 </motion.div>
 
@@ -133,7 +134,7 @@ export default function HeroSection() {
 
             {/* Scroll indicator */}
             <motion.div
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500"
+                className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2, duration: 0.6 }}
