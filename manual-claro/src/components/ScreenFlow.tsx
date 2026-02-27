@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { ChevronLeft, Info } from 'lucide-react';
+import Link from 'next/link';
+import { ChevronLeft, Info, ArrowLeft } from 'lucide-react';
 import Hotspot from './Hotspot';
 import ProgressBar from './ProgressBar';
 import ExplanationPanel from './ExplanationPanel';
@@ -64,24 +65,36 @@ export default function ScreenFlow({ flowData }: ScreenFlowProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen animated-gradient mesh-gradient">
       {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-30">
+      <header className="glass-dark sticky top-0 z-30" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
+              <Link
+                href="/"
+                className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm mr-3"
+                id="back-to-home"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span className="hidden sm:inline">Inicio</span>
+              </Link>
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, #e8002d, #b5001f)' }}
+              >
                 <span className="text-white font-bold text-xl">C</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Manual de Usuario</h1>
-                <p className="text-sm text-gray-600">Pago de Facturas - Mi Claro</p>
+                <h1 className="text-lg font-bold text-white">Pago de Facturas</h1>
+                <p className="text-xs text-gray-500">Manual de Usuario · Mi Claro</p>
               </div>
             </div>
 
             <button
               onClick={() => setIsPanelOpen(true)}
-              className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+              className="flex items-center space-x-2 px-4 py-2 rounded-xl text-white font-semibold text-sm transition-all duration-300 glow-red-sm hover:glow-red"
+              style={{ background: 'linear-gradient(135deg, #e8002d, #b5001f)' }}
             >
               <Info className="w-4 h-4" />
               <span className="hidden sm:inline">Ver Instrucciones</span>
@@ -91,10 +104,10 @@ export default function ScreenFlow({ flowData }: ScreenFlowProps) {
           <ProgressBar currentStep={currentStepIndex + 1} totalSteps={totalSteps} />
 
           <div className="mt-2 flex items-center justify-between text-sm">
-            <span className="text-gray-600">
+            <span className="text-gray-500">
               Paso {currentStepIndex + 1} de {totalSteps}
             </span>
-            <span className="text-gray-900 font-medium">{currentStep.title}</span>
+            <span className="text-white font-medium">{currentStep.title}</span>
           </div>
         </div>
       </header>
@@ -159,11 +172,10 @@ export default function ScreenFlow({ flowData }: ScreenFlowProps) {
             <button
               onClick={handlePrevious}
               disabled={!canGoBack}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
-                canGoBack
-                  ? 'bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg'
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              }`}
+              className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-semibold transition-all ${canGoBack
+                  ? 'glass text-white hover:bg-white/10 card-hover'
+                  : 'opacity-30 cursor-not-allowed glass text-gray-600'
+                }`}
             >
               <ChevronLeft className="w-5 h-5" />
               <span>Anterior</span>
@@ -171,7 +183,8 @@ export default function ScreenFlow({ flowData }: ScreenFlowProps) {
 
             <button
               onClick={() => setIsPanelOpen(true)}
-              className="px-6 py-3 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-all shadow-md hover:shadow-lg"
+              className="px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300 glow-red-sm hover:glow-red"
+              style={{ background: 'linear-gradient(135deg, #e8002d, #b5001f)' }}
             >
               Ver Detalles
             </button>
@@ -179,7 +192,7 @@ export default function ScreenFlow({ flowData }: ScreenFlowProps) {
 
           {/* Hint */}
           <motion.p
-            className="mt-6 text-center text-gray-600 text-sm max-w-md"
+            className="mt-6 text-center text-gray-500 text-sm max-w-md"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
