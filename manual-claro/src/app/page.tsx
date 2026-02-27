@@ -9,8 +9,8 @@ export default function Home() {
     <main className="relative">
       <Navbar />
       <HeroSection />
-      <IntroSection />
       <GuidesSection />
+      <IntroSection />
       <FooterSection />
     </main>
   );

@@ -4,10 +4,9 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, Info, ArrowLeft } from 'lucide-react';
+import { ChevronLeft, Info, ArrowLeft, X, Lightbulb, ChevronRight } from 'lucide-react';
 import Hotspot from './Hotspot';
 import ProgressBar from './ProgressBar';
-import ExplanationPanel from './ExplanationPanel';
 import { FlowData, FlowStep } from '@/types/flow.types';
 
 interface ScreenFlowProps {
@@ -16,11 +15,13 @@ interface ScreenFlowProps {
 
 export default function ScreenFlow({ flowData }: ScreenFlowProps) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const [direction, setDirection] = useState(1);
+
 
   const currentStep: FlowStep = flowData.steps[currentStepIndex];
   const canGoBack = currentStep.previousStep !== undefined;
+  const canGoNext = currentStep.hotspots.length > 0;
   const totalSteps = flowData.steps.length;
 
   const goToStep = (stepId: number, dir: number = 1) => {
@@ -28,7 +29,7 @@ export default function ScreenFlow({ flowData }: ScreenFlowProps) {
     const newIndex = flowData.steps.findIndex((step: FlowStep) => step.id === stepId);
     if (newIndex !== -1) {
       setCurrentStepIndex(newIndex);
-      setIsPanelOpen(false);
+      setIsTooltipOpen(false);
     }
   };
 
@@ -91,14 +92,17 @@ export default function ScreenFlow({ flowData }: ScreenFlowProps) {
               </div>
             </div>
 
-            <button
-              onClick={() => setIsPanelOpen(true)}
-              className="flex items-center space-x-2 px-4 py-2 rounded-xl text-white font-semibold text-sm transition-all duration-300 glow-red-sm hover:glow-red"
-              style={{ background: 'linear-gradient(135deg, #e8002d, #b5001f)' }}
-            >
-              <Info className="w-4 h-4" />
-              <span className="hidden sm:inline">Ver Instrucciones</span>
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => setIsTooltipOpen((v) => !v)}
+                id="tooltip-trigger-header"
+                className="flex items-center space-x-2 px-4 py-2 rounded-xl text-white font-semibold text-sm transition-all duration-300 glow-red-sm hover:glow-red cursor-pointer"
+                style={{ background: 'linear-gradient(135deg, #e8002d, #b5001f)' }}
+              >
+                <Info className="w-4 h-4" />
+                <span className="hidden sm:inline">Ver Instrucciones</span>
+              </button>
+            </div>
           </div>
 
           <ProgressBar currentStep={currentStepIndex + 1} totalSteps={totalSteps} />
@@ -173,20 +177,24 @@ export default function ScreenFlow({ flowData }: ScreenFlowProps) {
               onClick={handlePrevious}
               disabled={!canGoBack}
               className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-semibold transition-all ${canGoBack
-                  ? 'glass text-white hover:bg-white/10 card-hover'
-                  : 'opacity-30 cursor-not-allowed glass text-gray-600'
-                }`}
+                ? 'glass text-white'
+                : 'opacity-30 cursor-not-allowed glass text-gray-600'
+                }
+                hover:bg-blue-500 hover:scale-105 hover:shadow-2xl hover:drop-shadow-orange-700 transition-all duration-300 cursor-pointer
+                `}
             >
               <ChevronLeft className="w-5 h-5" />
               <span>Anterior</span>
             </button>
 
             <button
-              onClick={() => setIsPanelOpen(true)}
-              className="px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300 glow-red-sm hover:glow-red cursor-pointer"
+              onClick={() => handleHotspotClick(currentStep.hotspots[0].nextStep)}
+              disabled={!canGoNext}
+              className="flex items-center space-x-2 px-6 py-3 rounded-xl font-semibold text-white glow-red-sm hover:glow-red cursor-pointer  hover:bg-blue-500 hover:scale-105 hover:shadow-2xl hover:drop-shadow-orange-700 transition-all duration-300"
               style={{ background: 'linear-gradient(135deg, #e8002d, #b5001f)' }}
             >
-              Ver Detalles
+              <span className="hidden sm:inline">Siguiente</span>
+              <ChevronRight className="w-5 h-5" />
             </button>
           </div>
 
@@ -202,13 +210,78 @@ export default function ScreenFlow({ flowData }: ScreenFlowProps) {
         </div>
       </main>
 
-      {/* Explanation Panel */}
-      <ExplanationPanel
-        isOpen={isPanelOpen}
-        title={currentStep.title}
-        explanation={currentStep.explanation}
-        onClose={() => setIsPanelOpen(false)}
-      />
+      {/* Explanation Tooltip / Popover */}
+      <AnimatePresence>
+        {isTooltipOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              className="fixed inset-0 z-40"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsTooltipOpen(false)}
+            />
+
+            {/* Tooltip Card */}
+            <motion.div
+              id="explanation-tooltip"
+              className="fixed z-50 right-[5%] bottom-[10%]"
+              style={{ transform: 'translate(-50%, -50%)' }}
+              initial={{ opacity: 0, scale: 0.85, y: -10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.85, y: -10 }}
+              transition={{ type: 'spring', damping: 22, stiffness: 260 }}
+            >
+              <div
+                className="relative w-80 rounded-2xl p-5 shadow-2xl"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(20,20,30,0.97) 0%, rgba(30,10,15,0.97) 100%)',
+                  border: '1px solid rgba(232,0,45,0.35)',
+                  backdropFilter: 'blur(20px)',
+                }}
+              >
+                {/* Close button */}
+                <button
+                  onClick={() => setIsTooltipOpen(false)}
+                  className="absolute top-3 right-3 p-1 rounded-full transition-colors hover:bg-white/10"
+                  id="tooltip-close"
+                >
+                  <X className="w-4 h-4 text-gray-400" />
+                </button>
+
+                {/* Header */}
+                <div className="flex items-center gap-2 mb-3">
+                  <div
+                    className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ background: 'linear-gradient(135deg, #e8002d, #b5001f)' }}
+                  >
+                    <Info className="w-4 h-4 text-white" />
+                  </div>
+                  <h3 className="text-white font-bold text-base leading-tight">{currentStep.title}</h3>
+                </div>
+
+                {/* Divider */}
+                <div className="h-px mb-3" style={{ background: 'rgba(232,0,45,0.2)' }} />
+
+                {/* Explanation */}
+                <p className="text-gray-300 text-sm leading-relaxed">{currentStep.explanation}</p>
+
+                {/* Tip */}
+                <div
+                  className="mt-4 flex items-start gap-2 rounded-xl p-3"
+                  style={{ background: 'rgba(232,0,45,0.08)', border: '1px solid rgba(232,0,45,0.15)' }}
+                >
+                  <Lightbulb className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
+                  <p className="text-xs text-red-300">
+                    Haz clic en las áreas resaltadas para continuar con el flujo.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
