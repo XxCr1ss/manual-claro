@@ -5,7 +5,7 @@ import { Phone, Mail, ExternalLink } from 'lucide-react';
 
 export default function FooterSection() {
     return (
-        <footer className="relative py-16 px-4 bg-black/40">
+        <footer id="soporte" className="relative py-16 px-4 bg-black/40">
             <div className="absolute top-0 left-0 right-0 section-divider" />
 
             <div className="max-w-6xl mx-auto">

@@ -2,19 +2,29 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, BookOpen } from 'lucide-react';
+import { Menu, X, BookOpen, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
-const navItems = [
+const indexItems = [
+    { href: '/#portada', label: 'Portada' },
     { href: '/#introduccion', label: 'Introducción' },
-    { href: '/pagar-factura', label: 'Pagar Factura' },
+    { href: '/#requisitos', label: 'Requisitos del sistema' },
+    { href: '/#instalacion', label: 'Instalación' },
+    { href: '/descripcion-interfaz', label: 'Descripción de la interfaz' },
+    { href: '/#guias', label: 'Funciones y características' },
+    { href: '/solucion-problemas', label: 'Solución de problemas' },
+    { href: '/#mantenimiento', label: 'Mantenimiento y actualizaciones' },
+    { href: '/#soporte', label: 'Soporte técnico' },
+    { href: '/glosario', label: 'Glosario' },
+    { href: '/apendices', label: 'Apéndices' },
 ];
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
@@ -48,20 +58,47 @@ export default function Navbar() {
                     </Link>
 
                     {/* Desktop nav */}
-                    <div className="hidden md:flex items-center gap-1">
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                id={`nav-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${pathname === item.href
-                                        ? 'text-white bg-white/10'
-                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
-                                    }`}
+                    <div className="hidden md:flex items-center gap-1 relative">
+                        <div 
+                            className="relative group"
+                            onMouseEnter={() => setDropdownOpen(true)}
+                            onMouseLeave={() => setDropdownOpen(false)}
+                        >
+                            <button
+                                className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-200"
                             >
-                                {item.label}
-                            </Link>
-                        ))}
+                                Índice
+                                <ChevronDown className="w-4 h-4 ml-1" />
+                            </button>
+
+                            {/* Dropdown Menu */}
+                            <AnimatePresence>
+                                {dropdownOpen && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: 10 }}
+                                        transition={{ duration: 0.2 }}
+                                        className="absolute top-full left-0 mt-2 w-64 glass-dark rounded-xl overflow-hidden py-2 border border-white/10 shadow-xl"
+                                    >
+                                        {indexItems.map((item) => (
+                                            <Link
+                                                key={item.href}
+                                                href={item.href}
+                                                onClick={() => setDropdownOpen(false)}
+                                                className={`block px-4 py-2.5 text-sm transition-colors ${
+                                                    pathname === item.href
+                                                        ? 'text-white bg-white/10'
+                                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                                }`}
+                                            >
+                                                {item.label}
+                                            </Link>
+                                        ))}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
                     </div>
 
                     {/* CTA button */}
@@ -99,8 +136,9 @@ export default function Navbar() {
                         transition={{ duration: 0.2 }}
                         className="fixed top-[65px] left-4 right-4 z-40 glass-dark rounded-2xl p-4 md:hidden"
                     >
-                        <div className="flex flex-col gap-1">
-                            {navItems.map((item) => (
+                        <div className="flex flex-col gap-1 max-h-[70vh] overflow-y-auto">
+                            <div className="px-4 py-2 text-xs font-bold text-gray-500 uppercase tracking-wider">Índice</div>
+                            {indexItems.map((item) => (
                                 <Link
                                     key={item.href}
                                     href={item.href}

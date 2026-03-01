@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 export default function HeroSection() {
     return (
-        <section className="relative py-20 min-h-screen flex flex-col items-center justify-center overflow-hidden animated-gradient mesh-gradient">
+        <section id="portada" className="relative py-20 min-h-screen flex flex-col items-center justify-center overflow-hidden animated-gradient mesh-gradient">
             {/* Background grid */}
             <div
                 className="absolute inset-0 opacity-[0.03]"
@@ -80,11 +80,23 @@ export default function HeroSection() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.4 }}
-                    className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+                    className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-6 leading-relaxed"
                 >
                     Tu guía completa e interactiva para dominar la aplicación <strong className="text-white">Mi Claro</strong>.
                     Aprende paso a paso cómo gestionar tus servicios, pagar facturas y mucho más.
                 </motion.p>
+
+                {/* Meta details */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.45 }}
+                    className="flex flex-col items-center gap-1 text-sm text-gray-400 mb-10 opacity-80"
+                >
+                    <p><span className="text-white font-medium">Versión de la aplicación:</span> 18.6.0</p>
+                    <p><span className="text-white font-medium">Fecha de publicación del manual:</span> 01 de Marzo de 2026</p>
+                    <p><span className="text-white font-medium">Autores:</span> Cristian David Cabrera Pantoja, Brayan Steven Narváez Valdez</p>
+                </motion.div>
 
                 {/* Stats */}
                 <motion.div
